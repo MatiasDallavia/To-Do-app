@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "task-challenge"
+version = "0.1.0"
+description = ""
+authors = ["fauster <federico.auster@crehana.com>"]
+readme = "README.md"
+packages = [{include = "task_exercise"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^4.1.7"
+fastapi = "^0.95.0"
+strawberry-graphql = "^0.168.1"
+uvicorn = "^0.21.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
