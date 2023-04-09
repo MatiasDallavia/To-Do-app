@@ -36,7 +36,6 @@ class SingleSubTaskQuery:
     ) -> TaskNode:
         reward_list_controller = SingleSubTasksController(subTask_id=int(task_id))
         task = reward_list_controller.get_object()
-        print(task)
         return TaskNode.from_db_model(task)
     
 
@@ -51,10 +50,8 @@ class ListTaskQuery:
             reward_list_controller = ListSubTasksController(task=task)
             subTasks = reward_list_controller.get_object_list()
             sub_task_node = ListSubTaskNode.from_db_model(task, subTasks)
-            list_task_node.append(sub_task_node)
-        print(type(list_task_node))     
-        print("subs: " ,list_task_node)       
-        return ListTaskNode( task = list_task_node )    
+            list_task_node.append(sub_task_node)    
+        return ListTaskNode( tasks = list_task_node )    
 
                 
     
@@ -70,21 +67,10 @@ class ListSubTaskQuery:
     ) -> ListSubTaskNode:
         reward_single_controller = SingleTasksController(task_id=int(task_id))
         task =  reward_single_controller.get_object()
+        if task == None:
+            return ListSubTaskNode.from_db_model(None , None)
         reward_list_controller = ListSubTasksController(task=task)
         subTasks = reward_list_controller.get_object_list()
         return ListSubTaskNode.from_db_model(task, subTasks)
 
-
-@strawberry.type
-class StateQuery:
-    @strawberry.field(description="List of tasks")
-    @sync_to_async
-    def get_state(
-        self,
-        info: Info,
-        task_id: strawberry.ID,
-    ) -> bool:
-        reward_list_controller = SingleTasksController(task_id=int(task_id))
-        task = reward_list_controller.get_object()
-        return TaskNode.from_db_model(task).is_completed
 

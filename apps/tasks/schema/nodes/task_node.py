@@ -23,32 +23,46 @@ class TaskNode:
 
     @classmethod
     def from_db_model(cls, instance):
-        return cls(
-            id=instance.id,
-            text=instance.text,
-            is_completed=instance.is_completed,
+        if instance == None:
+            return cls(
+                id=None,
+                text=None,
+                is_completed=None,
         )
+        else:
+            return cls(
+                id=instance.id,
+                text=instance.text,
+                is_completed=instance.is_completed,
+            )
 
 
 @strawberry.type
 class ListSubTaskNode(TaskNode):
-    sub_tasks : List[TaskNode]
+    sub_tasks : Optional[List[TaskNode]]
 
     @classmethod
-    def from_db_model(cls, task: Tasks , sub_tasks_query):
-        li = []
-        for subTask in sub_tasks_query:
-            li.append(subTask)
-        print(li)           
-        return cls(
-            id=task.id,
-            text=task.text,
-            is_completed=task.is_completed,
-            sub_tasks = li
-        )
+    def from_db_model(cls, task: Optional[Tasks] , sub_tasks_query: Optional[List[TaskNode]]):
+        if task == None:
+            return cls(
+                id= None,
+                text= None,
+                is_completed= None,
+                sub_tasks = None
+            )
+        else:
+            li = []
+            for subTask in sub_tasks_query:
+                li.append(subTask)
+            return cls(
+                id=task.id,
+                text=task.text,
+                is_completed=task.is_completed,
+                sub_tasks = li
+            )
 
 @strawberry.type
-class ListTaskNode(TaskNode):
+class ListTaskNode():
     tasks : List[ListSubTaskNode]
 
 @strawberry.type

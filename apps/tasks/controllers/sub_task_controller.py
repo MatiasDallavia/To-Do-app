@@ -10,7 +10,6 @@ class ListSubTasksController(ListQuery):
         self.model = SubTasks
 
     def get_object_list(self):
-        print("1")
         return self.model.objects.filter(task_id = self.task_id)
     
 

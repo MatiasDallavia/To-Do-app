@@ -17,7 +17,6 @@ class UpdateTask:
         try:
             reward_list_controller = UpdateTaskFactory(task_id=int(task_id))
             task = await reward_list_controller.update(is_completed = is_completed)
-            print("task: " , type(task))
             task = TaskNode.from_db_model(task)
             success = True
             message = "Task updated successfully"
@@ -43,14 +42,13 @@ class UpdateSubTask:
         subTask_id: strawberry.ID ,
         is_completed : bool 
     ) -> TaskMutationNode:
+        subTask = None
         try:
             reward_list_controller = UpdateSubTaskFactory(subTask_id=int(subTask_id))
             subTask = await reward_list_controller.update(is_completed = is_completed)
-            print("task: " , type(subTask))
             subTask = TaskNode.from_db_model(subTask)
             success = True
             message = "sub-Task updated successfully"
-            exception = None   
         except Exception as e:
             success = False
             task = None
